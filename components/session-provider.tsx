@@ -1,8 +1,6 @@
-"use client";
-
-import {useEffect} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import {useUser} from "@/lib/store/user";
+import {useEffect} from "react";
 
 export default function SessionProvider() {
   const setUser = useUser((state) => state.setUser)
@@ -18,7 +16,9 @@ export default function SessionProvider() {
   }
 
   useEffect(() => {
-    readUserSession();
+    readUserSession()
     // eslint-disable-next-line
   }, []);
+
+  return <></>
 }
