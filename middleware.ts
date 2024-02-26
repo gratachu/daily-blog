@@ -55,20 +55,19 @@ export async function middleware(request: NextRequest) {
   )
 
   const { data } = await supabase.auth.getUser()
-  console.log(data)
+
+  console.log(data.user?.user_metadata.role)
+  if (data.user) {
+    if (data.user.user_metadata.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url))
+    }
+  } else {
+    return NextResponse.redirect(new URL("/", request.url))
+  }
 
   return response
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ["/dashboard/:path*"]
 }
