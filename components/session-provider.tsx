@@ -1,3 +1,5 @@
+"use client";
+
 import {createBrowserClient} from "@supabase/ssr";
 import {useUser} from "@/lib/store/user";
 import {useEffect} from "react";
