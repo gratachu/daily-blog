@@ -21,6 +21,7 @@ import {Switch} from "@/components/ui/switch";
 import {BsSave} from "react-icons/bs";
 import {useState} from "react";
 import {PencilIcon} from "lucide-react";
+import {cn} from "@/lib/utils";
 
 const FormSchema = z.object({
   title: z.string().min(2, {
@@ -62,7 +63,7 @@ export default function BlogForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full border rounded-md space-y-6">
-        <div className="p-5 flex items-center flex-wrap justify-between border-b">
+        <div className="p-5 flex items-center flex-wrap justify-between border-b gap-5">
           <div className="flex gap-5 items-center">
             <span
               role="button"
@@ -130,15 +131,17 @@ export default function BlogForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="p-2 w-full">
-                  <Input placeholder="title" {...field} />
+                <div className={cn("p-2 w-full flex break-words gap-2", isPreview?"divide-x-0":"divide-x")}>
+                  <Input placeholder="title" {...field}  className={cn("border-none text-lg font-medium leading-relaxed", isPreview?"w-0 p-0":"w-full lg:w-1/2")}/>
+                  <div className={cn("lg:px-10", isPreview?"mx-auto w-full lg:w-4/5":"w-1/2 lg:block ")}>
+                    <h1 className="text-3xl font-medium">{form.getValues().title}</h1>
+                  </div>
                 </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
       </form>
     </Form>
   )
