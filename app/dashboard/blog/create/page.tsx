@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import {EyeOpenIcon, RocketIcon, StarIcon} from "@radix-ui/react-icons";
 import {Switch} from "@/components/ui/switch";
+import {BsCopy} from "react-icons/bs";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -82,6 +83,10 @@ export default function BlogForm() {
               </FormItem>
             )}
           />
+          <Button className="gap-1">
+            <BsCopy />
+            Save
+          </Button>
         </div>
         <FormField
           control={form.control}
