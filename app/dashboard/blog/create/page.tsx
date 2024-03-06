@@ -22,6 +22,7 @@ import {BsSave} from "react-icons/bs";
 import {useState} from "react";
 import {PencilIcon} from "lucide-react";
 import {cn} from "@/lib/utils";
+import Image from "next/image";
 
 const FormSchema = z.object({
   title: z.string().min(2, {
@@ -39,6 +40,7 @@ export default function BlogForm() {
   const [isPreview, setPreview] = useState(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    mode: "all",
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
@@ -120,7 +122,9 @@ export default function BlogForm() {
               )}
             />
           </div>
-          <Button className="gap-1">
+          <Button className="gap-1"
+                  disabled={!form.formState.isValid}
+          >
             <BsSave />
             Save
           </Button>
@@ -138,7 +142,33 @@ export default function BlogForm() {
                   </div>
                 </div>
               </FormControl>
-              <FormMessage />
+              {form.getFieldState("title").invalid && form.getValues().title && <FormMessage />}
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="image_url"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className={cn("p-2 w-full flex break-words gap-2", isPreview?"divide-x-0":"divide-x")}>
+                  <Input placeholder="image_url" {...field}  className={cn("border-none text-lg font-medium leading-relaxed", isPreview?"w-0 p-0":"w-full lg:w-1/2")}/>
+                  <div className={cn("lg:px-10", isPreview?"mx-auto w-full lg:w-4/5":"w-1/2 lg:block ")}>
+                    {!isPreview ? (
+                      <p>
+                        Click on Preview to see image
+                      </p>
+                    ): (
+                      <div className="relative h-80 mt-5 border rounded-md">
+                        <Image src={form.getValues().image_url} alt="preview" fill className="object-cover object-center rounded-md"/>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </FormControl>
+              {form.getFieldState("image_url").invalid && form.getValues().image_url &&
+                  <div className="p-2"><FormMessage /></div>}
             </FormItem>
           )}
         />
